@@ -1,0 +1,1 @@
+data_path = "/Users/sergeiakhmadulin/Plate_dataset"
