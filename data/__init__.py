@@ -1,1 +1,1 @@
-from data.get_images import load_heart_failure_dataset
+from data.get_images import load_images_dataset
