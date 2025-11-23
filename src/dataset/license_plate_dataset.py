@@ -57,24 +57,3 @@ class LicensePlateDataset(Dataset):
             img = self.transforms(img)
 
         return img, target
-
-
-from torch.utils.data import DataLoader
-from torchvision import transforms
-
-transform = transforms.Compose([
-    transforms.ToTensor(),
-])
-
-train_dataset = LicensePlateDataset(
-    img_dir="dataset/images",
-    label_dir="dataset/labels",
-    transforms=transform
-)
-
-train_loader = DataLoader(
-    train_dataset,
-    batch_size=8,
-    shuffle=True,
-    collate_fn=lambda batch: tuple(zip(*batch))  # important for detection models
-)
