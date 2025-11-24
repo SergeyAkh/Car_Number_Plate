@@ -3,11 +3,11 @@ import shutil
 import os
 
 import sys
-from config import data_path
+from config import DATA_DIR
 
 
-def load_images_dataset(path):
-    target_dir = data_path  # your path
+def load_images_dataset():
+    target_dir = DATA_DIR  # your path
 
     # If directory exists AND contains files → abort
     if os.path.exists(target_dir) and os.listdir(target_dir):
