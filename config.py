@@ -3,7 +3,7 @@ from pathlib import Path
 
 # Project root (resolved automatically)
 ROOT = Path(__file__).resolve().parent
-
+print(ROOT)
 DATA_DIR = ROOT/"data"
 
 # Base project directory (absolute path)
@@ -30,7 +30,7 @@ DATA_YAML = os.path.join(DATASET_DIR, "data.yaml")
 MODEL_CONFIG = {
     "img_size": 640,
     "batch_size": 16,
-    "epochs": 100,
+    "epochs": 1,
     "model_name": "yolov8n",  # can be yolov8s / yolov8m etc.
 }
 

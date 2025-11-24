@@ -5,6 +5,7 @@ model = YOLO(MODEL_CONFIG["model_name"])
 
 model.train(
     data=DATA_YAML,
+    device="mps",
     epochs=MODEL_CONFIG["epochs"],
     imgsz=MODEL_CONFIG["img_size"],
     batch=MODEL_CONFIG["batch_size"],

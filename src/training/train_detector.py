@@ -1,25 +1,11 @@
-from torch.utils.data import DataLoader
-from torchvision import transforms
-from src.dataset.license_plate_dataset import LicensePlateDataset
+from config import DATA_YAML, MODEL_CONFIG
+from ultralytics import YOLO
 
-from config import IMAGES_DIR, LABELS_DIR
+model = YOLO(MODEL_CONFIG["model_name"])
 
-def create_dataloader():
-    transform = transforms.Compose([
-        transforms.ToTensor(),
-    ])
-
-    train_dataset = LicensePlateDataset(
-        img_dir=IMAGES_DIR,
-        label_dir=LABELS_DIR,
-        transforms=transform
-    )
-
-    train_loader = DataLoader(
-        train_dataset,
-        batch_size=8,
-        shuffle=True,
-        collate_fn=lambda x: tuple(zip(*x))
-    )
-
-    return train_loader
+model.train(
+    data=DATA_YAML,
+    epochs=MODEL_CONFIG["epochs"],
+    imgsz=MODEL_CONFIG["img_size"],
+    batch=MODEL_CONFIG["batch_size"],
+)
