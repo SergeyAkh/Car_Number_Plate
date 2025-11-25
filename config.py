@@ -1,9 +1,17 @@
 import os
 from pathlib import Path
+import torch
+
+if torch.backends.mps.is_available():
+    device = "mps"
+elif torch.cuda.is_available():
+    device = "cuda"
+else:
+    device = "cpu"
 
 # Project root (resolved automatically)
 ROOT = Path(__file__).resolve().parent
-print(ROOT)
+
 DATA_DIR = ROOT/"data"
 
 # Base project directory (absolute path)
@@ -25,12 +33,16 @@ VAL_LABELS = os.path.join(LABELS_DIR, "val")
 # Path to data.yaml for YOLO
 DATA_YAML = os.path.join(DATASET_DIR, "data.yaml")
 
+PATH_TO_TRAIN_PLATE = os.path.join(BASE_DIR, "src", "training", "runs", "detect")
+PATH_CROP_PLATE = os.path.join(BASE_DIR, "predictions", "crops")
 
 # Model config
 MODEL_CONFIG = {
+    "DEVICE": device,
+    "FOLDER": PATH_TO_TRAIN_PLATE,
     "img_size": 640,
     "batch_size": 16,
-    "epochs": 1,
+    "epochs": 10,
     "model_name": "yolov8n",  # can be yolov8s / yolov8m etc.
 }
 
