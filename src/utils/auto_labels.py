@@ -2,8 +2,8 @@ import pytesseract
 from PIL import Image
 import os
 
-img_dir = "/Users/sergeiakhmadulin/Car_Number_Plate/predictions/crops/val/images"
-label_dir = "/Users/sergeiakhmadulin/Car_Number_Plate/predictions/crops/val/labels"
+img_dir = "/Users/sergeiakhmadulin/Car_Number_Plate/predictions/crops/train/images"
+label_dir = "/Users/sergeiakhmadulin/Car_Number_Plate/predictions/crops/train/labels"
 
 os.makedirs(label_dir, exist_ok=True)
 

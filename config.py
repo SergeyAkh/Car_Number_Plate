@@ -10,12 +10,12 @@ else:
     device = "cpu"
 
 # Project root (resolved automatically)
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parent if "__file__" in globals() else Path.cwd()
 
 DATA_DIR = ROOT/"data"
 
 # Base project directory (absolute path)
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = Path(__file__).resolve().parent if "__file__" in globals() else Path.cwd()
 
 # Path to dataset
 DATASET_DIR = os.path.join(BASE_DIR, "data", "3", "YOLO_dataset")
@@ -44,6 +44,12 @@ MODEL_CONFIG = {
     "batch_size": 16,
     "epochs": 10,
     "model_name": "yolov8n",  # can be yolov8s / yolov8m etc.
+}
+
+CHARSET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+
+CRNN_config = {
+    "DEVICE": device
 }
 
 print("Loaded config:")
