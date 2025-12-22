@@ -16,7 +16,7 @@ def get_latest_run(base_dir=None):
 
     return best_model_path
 
-def predict_and_crop(model, source, crop_dir, train_val_single = None):
+def predict_and_crop(model, source, crop_dir = None, train_val_single = None, save_crop = None):
     """
     Runs prediction and crops all detections.
     Works for: single image OR any folder of images.
@@ -26,18 +26,18 @@ def predict_and_crop(model, source, crop_dir, train_val_single = None):
 
     if train_val_single is not None:
         crop_dir = os.path.join(crop_dir, train_val_single, "images")
-
-    os.makedirs(crop_dir, exist_ok=True)
+        os.makedirs(crop_dir, exist_ok=True)
 
     for r in results:
         img = Image.fromarray(r.orig_img)
         img_name = os.path.splitext(os.path.basename(r.path))[0]
 
-        for i, box in enumerate(r.boxes):
+        for i, box in enumerate(r.boxes[0]):
             x1, y1, x2, y2 = box.xyxy[0].tolist()
             crop = img.crop((x1, y1, x2, y2))
-
-            crop_path = os.path.join(crop_dir, f"{img_name}_crop_{i}.jpg")
-            crop.save(crop_path)
-
-    print(f"Crops saved to: {crop_dir}")
+            if save_crop:
+                crop_path = os.path.join(crop_dir, f"{img_name}_crop_{i}.jpg")
+                crop.save(crop_path)
+                print(f"Crops saved to: {crop_dir}")
+    if train_val_single is None:
+        return crop

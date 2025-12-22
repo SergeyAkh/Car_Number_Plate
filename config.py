@@ -9,6 +9,7 @@ elif torch.cuda.is_available():
 else:
     device = "cpu"
 
+print(5 % 5)
 # Project root (resolved automatically)
 ROOT = Path(__file__).resolve().parent if "__file__" in globals() else Path.cwd()
 
@@ -35,6 +36,8 @@ DATA_YAML = os.path.join(DATASET_DIR, "data.yaml")
 
 PATH_TO_TRAIN_PLATE = os.path.join(BASE_DIR, "src", "training", "runs", "detect")
 PATH_CROP_PLATE = os.path.join(BASE_DIR, "predictions", "crops")
+
+print(33)
 
 # Model config
 MODEL_CONFIG = {

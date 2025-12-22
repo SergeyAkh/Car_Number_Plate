@@ -1,0 +1,1 @@
+from src.dataset.char_dataset.augmentation import augment_image
