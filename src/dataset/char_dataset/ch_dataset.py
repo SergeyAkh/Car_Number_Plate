@@ -2,9 +2,10 @@ import os
 from torch.utils.data import Dataset
 from PIL import Image
 import torch
+from config import charset
 
 class OCRFileDataset(Dataset):
-    def __init__(self, images_dir, label_dir, transform=None, img_h=32, min_text_length = 1, charset = None):
+    def __init__(self, images_dir, label_dir, transform=None, img_h=32, min_text_length = 1, charset = charset):
         self.images_dir = images_dir
         self.label_dir = label_dir
         self.transform = transform

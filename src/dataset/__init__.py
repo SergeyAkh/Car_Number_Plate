@@ -1,6 +1,6 @@
 from .license_plate_dataset import LicensePlateDataset
 from .get_images import load_images_dataset
-from .char_dataset import augment_image
+from .char_dataset import *
 from .char_dataset import OCRFileDataset
 
 __all__ = [
