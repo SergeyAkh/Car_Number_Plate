@@ -3,15 +3,13 @@ from torch.utils.data import Dataset
 from PIL import Image
 import torch
 
-charset = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-blank_idx = len(charset)
-
 class OCRFileDataset(Dataset):
-    def __init__(self, images_dir, label_dir, transform=None, img_h=32, min_text_length = 1):
+    def __init__(self, images_dir, label_dir, transform=None, img_h=32, min_text_length = 1, charset = None):
         self.images_dir = images_dir
         self.label_dir = label_dir
         self.transform = transform
         self.img_h = img_h
+        self.charset = charset
 
         img_files = [f for f in os.listdir(images_dir) if f.lower().endswith(".jpg")]
 

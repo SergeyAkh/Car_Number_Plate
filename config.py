@@ -37,7 +37,10 @@ DATA_YAML = os.path.join(DATASET_DIR, "data.yaml")
 PATH_TO_TRAIN_PLATE = os.path.join(BASE_DIR, "src", "training", "runs", "detect")
 PATH_CROP_PLATE = os.path.join(BASE_DIR, "predictions", "crops")
 
-print(33)
+PATH_TO_CHAR_MODEL = os.path.join(BASE_DIR, "src", "training", "runs", "characters")
+synt_path = os.path.join(BASE_DIR, "data", "3", "synthetic")
+
+charset = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 # Model config
 MODEL_CONFIG = {
@@ -46,10 +49,22 @@ MODEL_CONFIG = {
     "img_size": 640,
     "batch_size": 16,
     "epochs": 10,
-    "model_name": "yolov8n",  # can be yolov8s / yolov8m etc.
+    "model_name": "yolov8n",
 }
 
-CHARSET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+CHAR_MODEL_CONFIG = {
+    "DEVICE": device,
+    "FOLDER": PATH_TO_CHAR_MODEL,
+    "img_h" : 32,
+    "synt_path" : synt_path,
+    "crop_data" : PATH_CROP_PLATE,
+    "batch_size" : 8,
+    "lr" : 5e-5,
+    "weight_decay": 1e-5,
+    "epochs" : 100,
+    "num_classes" : len(charset) + 1,
+}
+
 
 CRNN_config = {
     "DEVICE": device

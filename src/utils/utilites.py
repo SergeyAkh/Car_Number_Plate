@@ -1,5 +1,7 @@
 import os
 from PIL import Image
+import numpy as np
+import matplotlib.pyplot as plt
 
 def get_latest_run(base_dir=None):
     if not os.path.exists(base_dir):
@@ -15,6 +17,63 @@ def get_latest_run(base_dir=None):
     best_model_path = os.path.join(latest, "weights", "best.pt")
 
     return best_model_path
+
+def get_latest_model_new(base_dir):
+    if not os.path.exists(base_dir):
+        raise FileNotFoundError(f"{base_dir} does not exist")
+
+    candidates = []
+
+    for root, dirs, files in os.walk(base_dir):
+        # YOLO best.pt
+        if "weights" in root and "best.pt" in files:
+            candidates.append(os.path.join(root, "best.pt"))
+
+        # Standard PyTorch models
+        for f in files:
+            if f.endswith(".pth"):
+                candidates.append(os.path.join(root, f))
+
+    if not candidates:
+        raise FileNotFoundError("No model (.pt or .pth) found")
+
+    latest = max(candidates, key=os.path.getmtime)
+    return latest
+
+def plot_two_images_with_text(img1, img2, text,
+                              text_pos=(0.02, 0.98)):
+    """
+    img1, img2: numpy arrays (H×W×C or H×W)
+    text: string
+    text_pos: (x, y) in axes coords (0–1)
+    """
+    # Convert PIL images to numpy
+    if not isinstance(img1, np.ndarray):
+        img1 = np.array(img1)
+    if not isinstance(img2, np.ndarray):
+        img2 = np.array(img2)
+
+    fig, axes = plt.subplots(2, 1, figsize=(6, 8))
+
+    # First image
+    axes[0].imshow(img1, cmap='gray' if img1.ndim == 2 else None)
+    axes[0].axis('off')
+
+    # Second image
+    axes[1].imshow(img2, cmap='gray' if img2.ndim == 2 else None)
+    axes[1].axis('off')
+
+    fig.text(
+        0.5, 0.01,
+        f"Plate number is: {text}",
+        ha='right',
+        va='bottom',
+        fontsize=13,
+        bbox=dict(facecolor='white', alpha=0.8, edgecolor='none')
+    )
+
+    plt.tight_layout()
+    plt.show()
 
 def predict_and_crop(model, source, crop_dir = None, train_val_single = None, save_crop = None):
     """
