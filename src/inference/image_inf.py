@@ -1,5 +1,5 @@
 from config import VAL_IMAGES, charset, CHAR_MODEL_CONFIG
-from src.utils.utilites import predict_and_crop,get_latest_model_new, plot_two_images_with_text
+from src.utils import predict_and_crop, get_latest_model_new, plot_two_images_with_text
 from src.models import TinyOCR, box_model
 from src.utils.char_utils import *
 

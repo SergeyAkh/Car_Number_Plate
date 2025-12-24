@@ -1,7 +1,6 @@
 import torch
 from PIL import Image
 import torchvision.transforms as T
-import numpy as np
 
 def ctc_decode(pred, blank_idx, charset):
     """
@@ -16,69 +15,6 @@ def ctc_decode(pred, blank_idx, charset):
             decoded.append(charset[p])
         prev = p
     return "".join(decoded)
-
-def universal_hybrid_decode(logits, charset, blank_idx=0, beam_width=3, conf_thresh=0.7):
-    """
-    logits: [T, C] raw model output
-    Returns: decoded string
-    """
-
-    # --- Step 1: Argmax + collapse ---
-    probs = torch.softmax(logits, dim=-1)  # [T, C]
-    max_probs, indices = probs.max(dim=-1)
-
-    collapsed = []
-    confs = []
-    prev_idx = None
-    for idx, p in zip(indices.tolist(), max_probs.tolist()):
-        if idx == blank_idx or idx == prev_idx:
-            prev_idx = idx
-            continue
-        collapsed.append(charset[idx])
-        confs.append(p)
-        prev_idx = idx
-
-    # --- Step 2: Identify low-confidence positions ---
-    low_conf_positions = [i for i, p in enumerate(confs) if p < conf_thresh]
-    if not low_conf_positions:
-        return ''.join(collapsed)
-
-    # --- Step 3: Beam search only on low-confidence positions ---
-    T, C = logits.shape
-    beams = [("", 0.0)]  # prefix, logprob
-
-    for t in range(T):
-        probs_t = probs[t].cpu().numpy()
-        new_beams = {}
-        for prefix, score in beams:
-            for c in range(C):
-                ch = charset[c]
-                # Only apply beam for low-confidence positions
-                if t in low_conf_positions:
-                    new_prefix = prefix if c == blank_idx else prefix + ch
-                else:
-                    # For high-confidence, keep argmax
-                    if c != indices[t]:
-                        continue
-                    new_prefix = prefix + ch
-                new_score = score + np.log(max(probs_t[c], 1e-12))
-                if new_prefix in new_beams:
-                    new_beams[new_prefix] = np.logaddexp(new_beams[new_prefix], new_score)
-                else:
-                    new_beams[new_prefix] = new_score
-
-        # Keep top-K beams
-        beams = sorted(new_beams.items(), key=lambda x: x[1], reverse=True)[:beam_width]
-        beams = [(b, s) for b, s in beams]
-
-    # --- Step 4: Collapse duplicates ---
-    best = beams[0][0]
-    out = []
-    for ch in best:
-        if len(out) == 0 or out[-1] != ch:
-            out.append(ch)
-    return "".join(out)
-
 
 def compute_accuracy_single(decoded_texts, gt_texts):
     """

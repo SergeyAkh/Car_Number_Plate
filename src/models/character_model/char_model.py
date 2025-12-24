@@ -14,8 +14,8 @@ class TinyOCR(nn.Module):
         self.rnn = nn.LSTM(
             input_size=64 * 8,
             hidden_size=128,
-            num_layers=2,  # было 1
-            dropout=0.3,  # новый
+            num_layers=2,
+            dropout=0.3,
             batch_first=False,
             bidirectional=True
         )
