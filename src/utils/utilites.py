@@ -56,7 +56,7 @@ def plot_two_images_with_text(img1, img2, text,
     fig, axes = plt.subplots(2, 1, figsize=(6, 8))
 
     # First image
-    axes[0].imshow(img1, cmap='gray' if img1.ndim == 2 else None)
+    axes[0].imshow(img1)
     axes[0].axis('off')
 
     # Second image
