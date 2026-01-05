@@ -81,7 +81,7 @@ def predict_and_crop(model, source, crop_dir = None, train_val_single = None, sa
     Works for: single image OR any folder of images.
     """
     # Run prediction
-    results = model.predict(source, save=False, save_crop=False)
+    results = model.predict(source, save=False, save_crop=False, verbose=False)
 
     if train_val_single is not None:
         crop_dir = os.path.join(crop_dir, train_val_single, "images")

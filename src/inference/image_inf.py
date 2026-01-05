@@ -4,7 +4,8 @@ from src.models import TinyOCR, box_model
 from src.utils.char_utils import *
 
 import torch
-import os
+
+
 
 def show_image_results(img):
 
@@ -14,8 +15,8 @@ def show_image_results(img):
     model.load_state_dict(torch.load(best_char_model))
 
 
-    original_image = Image.open(os.path.join(VAL_IMAGES, img))
-    plate_box = predict_and_crop(box_model, os.path.join(VAL_IMAGES, img))
+    original_image = Image.open(img)
+    plate_box = predict_and_crop(box_model, img)
 
     img_1 = read_img(plate_box, CHAR_MODEL_CONFIG["img_h"])
 
@@ -31,4 +32,5 @@ def show_image_results(img):
         text=decoded
     )
 
-show_image_results("N74.jpeg")
+
+show_image_results("/Users/sergeiakhmadulin/Car_Number_Plate/data/3/YOLO_dataset/images/train/N1.jpeg")

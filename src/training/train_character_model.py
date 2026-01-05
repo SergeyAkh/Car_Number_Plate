@@ -31,7 +31,6 @@ val_transform = T.Compose([
     T.Lambda(lambda x: 1.0 - x)
 ])
 
-
 synt_real = "real"
 
 if synt_real == "synt":
@@ -93,7 +92,7 @@ model.to(device)
 def compute_time_downscale(model, input_height=32):
 
     with torch.no_grad():
-        dummy = torch.zeros(1, 1, input_height, 400)  # 400 — любое большое значение
+        dummy = torch.zeros(1, 1, input_height, 400)
         out = model.conv(dummy)  # B×C×H×W'
         _, _, _, w_out = out.shape
         downscale = 400 // w_out
