@@ -31,6 +31,3 @@ def show_image_results(img):
         plate_box,
         text=decoded
     )
-
-
-show_image_results("/Users/sergeiakhmadulin/Car_Number_Plate/data/3/YOLO_dataset/images/train/N1.jpeg")
